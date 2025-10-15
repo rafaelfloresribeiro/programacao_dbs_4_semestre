@@ -1,0 +1,42 @@
+CREATE DATABASE Loja;
+USE Loja;
+
+CREATE TABLE Estado (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50) NOT NULL,
+    UF CHAR(2) NOT NULL
+);
+
+CREATE TABLE Municipio (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Estado_ID INT NOT NULL,
+    Nome VARCHAR(80) NOT NULL,
+    CodIBGE INT NOT NULL,
+    CONSTRAINT FK_Municipio_Estado1_idx FOREIGN KEY (Estado_ID) 
+        REFERENCES Estado(ID) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE Cliente (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(80) NOT NULL,
+    CPF CHAR(11) NOT NULL UNIQUE,
+    Celular CHAR(11),
+    EndLogradouro VARCHAR(100),
+    EndNumero VARCHAR(10),
+    EndMunicipio INT,
+    EndCEP CHAR(8),
+    Municipio_ID INT NOT NULL,
+    CONSTRAINT fk_Cliente_Municipio1_idx FOREIGN KEY (Municipio_ID) 
+        REFERENCES Municipio(ID) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE ContaReceber (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Cliente_ID INT NOT NULL,
+    FaturaVendaID INT NOT NULL,
+    DataConta DATE NOT NULL,
+    Valor DECIMAL(18,2) NOT NULL,
+    Situação ENUM('1','2','3') NOT NULL DEFAULT '1',
+    CONSTRAINT fk_ContaReceber_Cliente_idx FOREIGN KEY (Cliente_ID) 
+        REFERENCES Cliente(ID) ON DELETE RESTRICT ON UPDATE CASCADE
+);
