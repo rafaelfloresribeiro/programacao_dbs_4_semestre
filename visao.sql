@@ -1,0 +1,1 @@
+SELECT * FROM view_contas_nao_pagas;
